@@ -26,7 +26,7 @@ This module can also convert the found frequencies to Note objects.
 import wave
 import struct
 import numpy
-from mingus.containers.note import Note
+from ..containers.note import Note
 from numpy.fft import fft as _fft
 import operator
 
@@ -38,9 +38,10 @@ import operator
 # the frequencies we need to look up.
 
 _log_cache = []
-for x in xrange(129):
+for x in range(129):
     _log_cache.append(Note().from_int(x).to_hertz())
 _last_asked = None
+
 
 def _find_log_index(f):
     """Look up the index of the frequency f in the frequency table.
@@ -82,6 +83,7 @@ def _find_log_index(f):
     _last_asked = (begin, f)
     return begin
 
+
 def find_frequencies(data, freq=44100, bits=16):
     """Convert audio data into a frequency-amplitude table using fast fourier
     transformation.
@@ -106,6 +108,7 @@ def find_frequencies(data, freq=44100, bits=16):
     freqArray = numpy.arange(0, uniquePts * s, s)
     return zip(freqArray, p)
 
+
 def find_notes(freqTable, maxNote=100):
     """Convert the (frequencies, amplitude) list to a (Note, amplitude) list."""
     res = [0] * 129
@@ -119,6 +122,7 @@ def find_notes(freqTable, maxNote=100):
                 res[128] += ampl
     return [(Note().from_int(x) if x < 128 else None, n) for (x, n) in
             enumerate(res)]
+
 
 def data_from_file(file):
     """Return (first channel data, sample frequency, sample width) from a .wav
@@ -143,11 +147,13 @@ def data_from_file(file):
     fp.close()
     return (channel1, freq, bits)
 
+
 def find_Note(data, freq, bits):
     """Get the frequencies, feed them to find_notes and the return the Note
     with the highest amplitude."""
     data = find_frequencies(data, freq, bits)
     return sorted(find_notes(data), key=operator.itemgetter(1))[-1][0]
+
 
 def analyze_chunks(data, freq, bits, chunksize=512):
     """Cut the one channel data in chunks and analyzes them separately.
@@ -160,6 +166,7 @@ def analyze_chunks(data, freq, bits, chunksize=512):
         res.append(sorted(find_notes(f), key=operator.itemgetter(1))[-1][0])
         data = data[chunksize:]
     return res
+
 
 def find_melody(file='440_480_clean.wav', chunksize=512):
     """Cut the sample into chunks and analyze each chunk.
@@ -184,4 +191,3 @@ def find_melody(file='440_480_clean.wav', chunksize=512):
         else:
             res.append((d, 1))
     return [(x, freq) for (x, freq) in res]
-

@@ -17,8 +17,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from sequencer import Sequencer
-from sequencer_observer import SequencerObserver
+from .sequencer import Sequencer
+from .sequencer_observer import SequencerObserver
 __all__ = [
     'Sequencer',
     'SequencerObserver',
@@ -26,4 +26,4 @@ __all__ = [
     'midi_file_out',
     'midi_track',
     'fluidsynth',
-    ]
+]

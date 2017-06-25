@@ -17,7 +17,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from mt_exceptions import UnexpectedObjectError
+from .mt_exceptions import UnexpectedObjectError
+
 
 class Composition(object):
 
@@ -60,7 +61,7 @@ class Composition(object):
         """
         if not hasattr(track, 'bars'):
             raise UnexpectedObjectError("Unexpected object '%s', "
-                    "expecting a mingus.containers.Track object" % track)
+                                        "expecting a mingus.containers.Track object" % track)
         self.tracks.append(track)
         self.selected_tracks = [len(self.tracks) - 1]
 
@@ -110,4 +111,3 @@ class Composition(object):
         for x in self.tracks:
             result += str(x)
         return result
-

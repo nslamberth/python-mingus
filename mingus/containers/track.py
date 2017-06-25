@@ -17,10 +17,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from mt_exceptions import InstrumentRangeError
-from mingus.containers.note_container import NoteContainer
-from mingus.containers.bar import Bar
-import mingus.core.value as value
+from .mt_exceptions import InstrumentRangeError
+from ..containers.note_container import NoteContainer
+from ..containers.bar import Bar
+from ..core import value as value
+
 
 class Track(object):
 
@@ -62,9 +63,8 @@ class Track(object):
         """
         if self.instrument != None:
             if not self.instrument.can_play_notes(note):
-                raise InstrumentRangeError, \
-                    "Note '%s' is not in range of the instrument (%s)" % (note,
-                        self.instrument)
+                raise InstrumentRangeError(
+                    "Note '%s' is not in range of the instrument (%s)" % (note, self.instrument))
         if duration == None:
             duration = 4
 
@@ -84,7 +84,7 @@ class Track(object):
         track."""
         for bar in self.bars:
             for beat, duration, notes in bar:
-                yield beat, duration, notes 
+                yield beat, duration, notes
 
     def from_chords(self, chords, duration=1):
         """Add chords to the Track.
@@ -110,7 +110,7 @@ class Track(object):
                 chord = NoteContainer().from_chord(chord)
                 if tun:
                     chord = tun.find_chord_fingering(chord,
-                            return_best_as_NoteContainer=True)
+                                                     return_best_as_NoteContainer=True)
                 if not self.add_notes(chord, duration):
                     # This should be the standard behaviour of add_notes
                     dur = self.bars[-1].value_left()
@@ -207,7 +207,7 @@ class Track(object):
         """
         if not hasattr(value, 'bar'):
             raise UnexpectedObjectError("Unexpected object '%s', "
-                    "expecting a mingus.containers.Barobject" % value)
+                                        "expecting a mingus.containers.Barobject" % value)
         self.bars[index] = value
 
     def __repr__(self):
@@ -217,4 +217,3 @@ class Track(object):
     def __len__(self):
         """Enable the len() function for Tracks."""
         return len(self.bars)
-

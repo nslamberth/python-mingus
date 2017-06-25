@@ -26,7 +26,8 @@ proper function so you only have to implement the functions for the events
 you need to see.
 """
 
-from mingus.midi.sequencer import Sequencer
+from ..midi.sequencer import Sequencer
+
 
 class SequencerObserver(object):
 
@@ -84,18 +85,20 @@ class SequencerObserver(object):
     def notify(self, msg_type, params):
         if msg_type == Sequencer.MSG_PLAY_INT:
             self.play_int_note_event(params['note'], params['channel'],
-                    params['velocity'])
+                                     params['velocity'])
         elif msg_type == Sequencer.MSG_STOP_INT:
             self.stop_int_note_event(params['note'], params['channel'])
         elif msg_type == Sequencer.MSG_CC:
-            self.cc_event(params['channel'], params['control'], params['value'])
+            self.cc_event(params['channel'],
+                          params['control'], params['value'])
         elif msg_type == Sequencer.MSG_INSTR:
-            self.instr_event(params['channel'], params['instr'], params['bank'])
+            self.instr_event(params['channel'],
+                             params['instr'], params['bank'])
         elif msg_type == Sequencer.MSG_SLEEP:
             self.sleep(params['s'])
         elif msg_type == Sequencer.MSG_PLAY_NOTE:
             self.play_Note(params['note'], params['channel'],
-                    params['velocity'])
+                           params['velocity'])
         elif msg_type == Sequencer.MSG_STOP_NOTE:
             self.stop_Note(params['note'], params['channel'])
         elif msg_type == Sequencer.MSG_PLAY_NC:
@@ -110,8 +113,7 @@ class SequencerObserver(object):
             self.play_Track(params['track'], params['channel'], params['bpm'])
         elif msg_type == Sequencer.MSG_PLAY_TRACKS:
             self.play_Tracks(params['tracks'], params['channels'],
-                    params['bpm'])
+                             params['bpm'])
         elif msg_type == Sequencer.MSG_PLAY_COMPOSITION:
             self.play_Composition(params['composition'], params['channels'],
-                    params['bpm'])
-
+                                  params['bpm'])

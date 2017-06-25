@@ -17,8 +17,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from mingus.containers.note import Note
-from mt_exceptions import UnexpectedObjectError
+from ..containers.note import Note
+from .mt_exceptions import UnexpectedObjectError
+
 
 class Instrument(object):
 
@@ -51,7 +52,7 @@ class Instrument(object):
             range[1] = Note(range[1])
         if not hasattr(range[0], 'name'):
             raise UnexpectedObjectError("Unexpected object '%s'. "
-                    "Expecting a mingus.containers.Note object" % range[0])
+                                        "Expecting a mingus.containers.Note object" % range[0])
         self.range = range
 
     def note_in_range(self, note):
@@ -63,7 +64,7 @@ class Instrument(object):
             note = Note(note)
         if not hasattr(note, 'name'):
             raise UnexpectedObjectError("Unexpected object '%s'. "
-                    "Expecting a mingus.containers.Note object" % note)
+                                        "Expecting a mingus.containers.Note object" % note)
         if note >= self.range[0] and note <= self.range[1]:
             return True
         return False
@@ -249,10 +250,11 @@ class MidiInstrument(Instrument):
         'Helicopter',
         'Applause',
         'Gunshot',
-        ]
+    ]
 
     def __init__(self, name=''):
         self.name = name
+
 
 class MidiPercussionInstrument(Instrument):
     def __init__(self):
@@ -448,4 +450,3 @@ class MidiPercussionInstrument(Instrument):
 
     def open_triangle(self):
         return Note(81 - 12)
-

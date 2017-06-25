@@ -17,9 +17,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from note import Note
-from mingus.core import intervals, chords, progressions
-from mt_exceptions import UnexpectedObjectError
+from .note import Note
+from .mt_exceptions import UnexpectedObjectError
+from ..core import intervals, chords, progressions
+
 
 class NoteContainer(object):
 
@@ -60,7 +61,7 @@ class NoteContainer(object):
                     note = Note(note, self.notes[-1].octave, dynamics)
         if not hasattr(note, 'name'):
             raise UnexpectedObjectError("Object '%s' was not expected. "
-                    "Expecting a mingus.containers.Note object." % note)
+                                        "Expecting a mingus.containers.Note object." % note)
         if note not in self.notes:
             self.notes.append(note)
             self.notes.sort()
@@ -193,7 +194,7 @@ class NoteContainer(object):
         consonance.
         """
         return self._consonance_test(intervals.is_perfect_consonant,
-                include_fourths)
+                                     include_fourths)
 
     def is_imperfect_consonant(self):
         """Test whether the notes are imperfect consonants.
@@ -355,4 +356,3 @@ class NoteContainer(object):
             if x not in other:
                 return False
         return True
-

@@ -24,16 +24,14 @@ Caution: this will throw Win32MidiException if there is no device, or device
 can't be opened.
 """
 
+from ..midi.sequencer import Sequencer
 import sys
-# We should be able to import this module on non-win32 systems without 
+# We should be able to import this module on non-win32 systems without
 # raising exceptions. So instead, raise in the init() method.
-if sys.platform=='win32':
+if sys.platform == 'win32':
     import win32midi
     from win32midi import Win32MidiException
-    
-from datetime import datetime
-from mingus.midi.sequencer import Sequencer
-from mingus.containers.instrument import MidiInstrument
+
 
 class Win32MidiSequencer(Sequencer):
     output = None
@@ -57,9 +55,8 @@ class Win32MidiSequencer(Sequencer):
         self.midplayer.rawNoteOff(note, channel)
 
     def cc_event(self, channel, control, value):
-        self.midplayer.controllerChange(control,value, channel)
+        self.midplayer.controllerChange(control, value, channel)
 
     def instr_event(self, channel, instr, bank):
         #"bank" currently not supported
         self.midplayer.programChange(instr, channel)
-

@@ -26,7 +26,7 @@ It handles conversions from integers to notes and vice versa and thus
 enables simple calculations.
 """
 
-from mt_exceptions import NoteFormatError, RangeError, FormatError
+from .mt_exceptions import NoteFormatError, RangeError, FormatError
 
 _note_dict = {
     'C': 0,
@@ -36,8 +36,9 @@ _note_dict = {
     'G': 7,
     'A': 9,
     'B': 11
-    }
+}
 fifths = ['F', 'C', 'G', 'D', 'A', 'E', 'B']
+
 
 def int_to_note(note_int, accidentals='#'):
     """Convert integers in the range of 0-11 to notes in the form of C or C#
@@ -66,18 +67,21 @@ def int_to_note(note_int, accidentals='#'):
     else:
         raise FormatError("'%s' not valid as accidental" % accidentals)
 
+
 def is_enharmonic(note1, note2):
     """Test whether note1 and note2 are enharmonic, i.e. they sound the same."""
     return note_to_int(note1) == note_to_int(note2)
 
+
 def is_valid_note(note):
     """Return True if note is in a recognised format. False if not."""
-    if not _note_dict.has_key(note[0]):
+    if not note[0] in _note_dict:
         return False
     for post in note[1:]:
         if post != 'b' and post != '#':
             return False
     return True
+
 
 def note_to_int(note):
     """Convert notes in the form of C, C#, Cb, C##, etc. to an integer in the
@@ -98,6 +102,7 @@ def note_to_int(note):
             val += 1
     return val % 12
 
+
 def reduce_accidentals(note):
     """Reduce any extra accidentals to proper notes.
 
@@ -114,9 +119,10 @@ def reduce_accidentals(note):
         else:
             raise NoteFormatError("Unknown note format '%s'" % note)
     if val >= note_to_int(note[0]):
-        return int_to_note(val%12)
+        return int_to_note(val % 12)
     else:
-        return int_to_note(val%12, 'b')
+        return int_to_note(val % 12, 'b')
+
 
 def remove_redundant_accidentals(note):
     """Remove redundant sharps and flats from the given note.
@@ -142,6 +148,7 @@ def remove_redundant_accidentals(note):
         val += 1
     return result
 
+
 def augment(note):
     """Augment a given note.
 
@@ -156,6 +163,7 @@ def augment(note):
     else:
         return note[:-1]
 
+
 def diminish(note):
     """Diminish a given note.
 
@@ -169,4 +177,3 @@ def diminish(note):
         return note + 'b'
     else:
         return note[:-1]
-
